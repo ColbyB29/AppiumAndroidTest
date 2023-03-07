@@ -14,8 +14,6 @@ public class appiumFactory {
 
     private static AndroidDriver driver;
 
-  //  private static AppiumDriver<MobileElement> testDriver;
-
     public appiumFactory(AndroidDriver driver){
         this.driver = driver;
     }
