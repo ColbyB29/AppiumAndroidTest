@@ -78,7 +78,7 @@ public class AndroidChromeTest {
         pagefactory.selectGame(game);
         pagefactory.clickLaunch();
 
-        Thread.sleep(30000);
+        Thread.sleep(30000); // hard coding is inconsistant
 
         //appium
         appiumFactory1.TapStartButton(350,1325);
