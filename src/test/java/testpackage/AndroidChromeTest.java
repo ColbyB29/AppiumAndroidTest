@@ -35,6 +35,7 @@ public class AndroidChromeTest {
     @Given("Landing on homepage")
     public void setUp() throws MalformedURLException {
 
+        //Setting up our Android environment for testing, Currently it is using my Samsung Galaxy A03s
         options.setPlatformName("Android");
 
         options.setAndroidDeviceSerialNumber("N000TA1183962301141");
@@ -48,19 +49,22 @@ public class AndroidChromeTest {
         pagefactory = new Pagefactory((AndroidDriver) driver);
 
         appiumFactory1 = new appiumFactory((AndroidDriver) driver);
+        //==============================================================================================
 
-        verifyTitle();
+        // Verify Title is the expected value
+        verifyTitle("PGS Test Suite");
 
 
     }
 
-
-    public void verifyTitle() throws MalformedURLException {
+    // Launches the website in test and accepts a string parameter as the expected game title and throws an assert if the title doesnt match
+    public void verifyTitle(String expectedGameTitle) throws MalformedURLException {
         driver.get("https://pgs-clients.pgs.casino/dev/lobby/89-ad6e648/index.html");
-        Assert.assertEquals(driver.getTitle(), "PGS Test Suite");
+        Assert.assertEquals(driver.getTitle(), expectedGameTitle);
 
     }
 
+    // Set the environment and cheat status. The parameters are supplied in the main.feature file
     @When("Selecting an Environment {string} and toggle cheat {string}")
     public void selectingAnEnvironmentAndToggleCheat(String envt, String cheatStatus) throws InterruptedException {
         Thread.sleep(2000);
@@ -69,12 +73,12 @@ public class AndroidChromeTest {
 
     }
 
+    // We pick the game parameter in the main.feature file, we can click launch with selenium finding the button by id
     @And("Selecting a game {string}")
     public void selectingAGame(String game) throws InterruptedException {
-        //Legendary Larry
+        //Legendary Larry seems to be our main test game
 
         Thread.sleep(2000);
-        //  driver.close();
         pagefactory.selectGame(game);
         pagefactory.clickLaunch();
 
@@ -84,13 +88,14 @@ public class AndroidChromeTest {
         appiumFactory1.TapStartButton(350,1325);
     }
 
+    // Using selenium to find the game-container object, Asserting if we do find it means that the game has been successfully loaded
     @Then("I verify that the game is loading")
     public void i_verify_that_the_game_is_loading() throws InterruptedException {
-        //some steps
         Thread.sleep(5000);
         WebElement element = driver.findElement(By.id("game-container"));
         System.out.println(element.getTagName());
-        // Assert.assertEquals();
+        Assert.assertEquals(element.getTagName(),"iframe");
+        driver.close();
         driver.quit();
     }
 
