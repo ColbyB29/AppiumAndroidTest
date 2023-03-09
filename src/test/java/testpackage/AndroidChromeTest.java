@@ -1,6 +1,7 @@
 package testpackage;
 
 import io.appium.java_client.android.AndroidDriver;
+import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -8,16 +9,22 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.awt.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+
 import pageFactory.Pagefactory;
 import appiumFactory.appiumFactory;
+import tesseractFactory.tesseractFactory;
 
 public class AndroidChromeTest {
 
@@ -30,6 +37,8 @@ public class AndroidChromeTest {
     Pagefactory pagefactory;
 
     appiumFactory appiumFactory1;
+
+    tesseractFactory tesseractFactory1;
 
     @BeforeMethod
     @Given("Landing on homepage")
@@ -49,6 +58,8 @@ public class AndroidChromeTest {
         pagefactory = new Pagefactory((AndroidDriver) driver);
 
         appiumFactory1 = new appiumFactory((AndroidDriver) driver);
+
+
         //==============================================================================================
 
         // Verify Title is the expected value
@@ -82,7 +93,7 @@ public class AndroidChromeTest {
         pagefactory.selectGame(game);
         pagefactory.clickLaunch();
 
-        Thread.sleep(30000); // hard coding is inconsistant
+        Thread.sleep(50000); // hard coding is inconsistant
 
         //appium
         appiumFactory1.TapStartButton(350,1325);
@@ -95,8 +106,31 @@ public class AndroidChromeTest {
         WebElement element = driver.findElement(By.id("game-container"));
         System.out.println(element.getTagName());
         Assert.assertEquals(element.getTagName(),"iframe");
-        driver.close();
-        driver.quit();
+
     }
 
+    @Given("testing")
+    public void tesseractOCRAttempt() throws Exception {
+
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+
+        System.out.println(driver.getTitle());
+        driver.switchTo().window(tabs.get(1));
+        System.out.println(driver.getTitle());
+
+
+        tesseractFactory1 = new tesseractFactory();
+        //tesseractFactory1.captureScreenshot("testimage",driver);
+        //tesseractFactory1.VerifyMinor();
+        WebElement wholePage = driver.findElement(By.id("game-wrapper"));
+
+        tesseractFactory1.shootWebElement(driver,wholePage);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        driver.close();
+        driver.quit();
+
+    }
 }
