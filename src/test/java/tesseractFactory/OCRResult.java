@@ -37,6 +37,7 @@ public class OCRResult {
         return BetAmount;
     }
 
+    // Verifying the results based on the bet amount and the jackpot amounts.
     public boolean VerifyResults() {
         boolean result = false;
 

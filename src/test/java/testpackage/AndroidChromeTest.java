@@ -60,7 +60,7 @@ public class AndroidChromeTest {
 
         appiumFactory1 = new appiumFactory((AndroidDriver) driver);
 
-
+        tesseractFactory1 = new tesseractFactory();
         //==============================================================================================
 
         // Verify Title is the expected value
@@ -121,16 +121,12 @@ public class AndroidChromeTest {
         System.out.println(driver.getTitle());
 
 
-        tesseractFactory1 = new tesseractFactory();
-
-        WebElement wholePage = driver.findElement(By.id("game-wrapper"));
-
-        tesseractFactory1.OCRJackpots(driver,wholePage,appiumFactory1);
+        tesseractFactory1.OCRJackpots(driver,appiumFactory1);
     }
 
     @Then("testing")
     public void TestMethod() throws TesseractException, IOException, InterruptedException {
-        tesseractFactory1 = new tesseractFactory();
+       // tesseractFactory1 = new tesseractFactory();
 
         tesseractFactory1.GetBetAmount(driver);
     }
