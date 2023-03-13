@@ -6,6 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.sourceforge.tess4j.TesseractException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -124,7 +125,14 @@ public class AndroidChromeTest {
 
         WebElement wholePage = driver.findElement(By.id("game-wrapper"));
 
-        tesseractFactory1.OCRJackpots(driver,wholePage,appiumFactory1,65,185,150,50);
+        tesseractFactory1.OCRJackpots(driver,wholePage,appiumFactory1);
+    }
+
+    @Then("testing")
+    public void TestMethod() throws TesseractException, IOException, InterruptedException {
+        tesseractFactory1 = new tesseractFactory();
+
+        tesseractFactory1.GetBetAmount(driver);
     }
 
     @After
