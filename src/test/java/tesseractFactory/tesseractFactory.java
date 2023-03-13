@@ -14,7 +14,7 @@ import java.io.File;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.openqa.selenium.Point;
-
+import appiumFactory.appiumFactory;
 import javax.imageio.ImageIO;
 
 public class tesseractFactory {
@@ -86,30 +86,83 @@ public class tesseractFactory {
         }
     }
 
-    public void shootWebElement(WebDriver driver, WebElement element) throws IOException, TesseractException {
-
-        Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm");
-        String strDate = dateFormat.format(date);
+    public String GetMinorJackpot(WebDriver driver) throws TesseractException, IOException {
         File screen = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
-        Point p = element.getLocation();
-
-        int width = 150;
-        int height = 50;
+        //this line is the filepath object if we need to save a screenshot to the imgs folder
+        //File f = new File(System.getProperty("user.dir") + "\\imgs\\"+"testName1"+strDate+".png");
 
         BufferedImage img = ImageIO.read(screen);
 
-        BufferedImage dest = img.getSubimage(p.getX() + 65, p.getY() + 185, width, height);
+        BufferedImage MinorImage = img.getSubimage(65, 185, 150, 50);
 
-        ImageIO.write(dest, "png", screen);
+        //this line saves the screenshot to the imgs file
+        // ImageIO.write(dest, "png", f);
 
-        File f = new File(System.getProperty("user.dir") + "\\imgs\\"+"testName1"+strDate+".png");
+        String MinorText = tesseract.doOCR(MinorImage);
 
-        FileUtils.copyFile(screen, f);
+        return MinorText;
+    }
 
-        String text = tesseract.doOCR(dest);
-        System.out.print("text: "+text);
+    public String GetMajorJackpot(WebDriver driver) throws TesseractException, IOException {
+        File screen = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+        //this line is the filepath object if we need to save a screenshot to the imgs folder
+        File f = new File(System.getProperty("user.dir") + "\\imgs\\"+"testName1.png");
+
+        BufferedImage img = ImageIO.read(screen);
+
+        BufferedImage MajorImage = img.getSubimage(505, 185, 150, 50);
+
+        //this line saves the screenshot to the imgs file
+         ImageIO.write(MajorImage, "png", f);
+
+        String MajorText = tesseract.doOCR(MajorImage);
+
+        return MajorText;
+    }
+
+    // This method still needs more logic added to it. It is missing a way to verify that the result from OCR is currently valid at the current bet level
+    public void OCRJackpots(WebDriver driver, WebElement element, appiumFactory factory, int xPos, int yPos, int width, int height) throws IOException, TesseractException {
+
+        int counter = 0;
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm");
+        String strDate = dateFormat.format(date);
+        Point p = element.getLocation();
+
+
+        //Loop over every minor and major jackpot amounts starting by incrementing the bet upwards
+        for(counter = 0; counter <= 5;counter++){
+            //Verify minor
+            System.out.print("minor text: "+GetMinorJackpot(driver));
+
+            //Next, we verify major
+            System.out.print("major text: "+GetMajorJackpot(driver));
+
+            factory.TapOnScreen(150,1200);
+       }
+
+        counter = 0;
+        for(counter = 0; counter <= 7;counter++){
+
+            //Minor
+            System.out.print("minor text: "+GetMinorJackpot(driver));
+
+            //Major
+            System.out.print("major text: "+GetMajorJackpot(driver));
+
+            factory.TapOnScreen(150,1275);
+
+        }
+
+
+
+
+
+
+
+
     }
 
 }

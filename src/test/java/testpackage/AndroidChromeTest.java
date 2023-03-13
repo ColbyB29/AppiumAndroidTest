@@ -93,10 +93,10 @@ public class AndroidChromeTest {
         pagefactory.selectGame(game);
         pagefactory.clickLaunch();
 
-        Thread.sleep(50000); // hard coding is inconsistant
+        Thread.sleep(40000); // hard coding is inconsistant
 
         //appium
-        appiumFactory1.TapStartButton(350,1325);
+        appiumFactory1.TapOnScreen(325,1300);
     }
 
     // Using selenium to find the game-container object, Asserting if we do find it means that the game has been successfully loaded
@@ -109,22 +109,22 @@ public class AndroidChromeTest {
 
     }
 
-    @Given("testing")
-    public void tesseractOCRAttempt() throws Exception {
+    @Given("Verify Minor and Major Jackpots")
+    public void tesseractOCRJackpots() throws Exception {
 
         ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
 
+        // New tab is open. we need to switch focus to that new window
         System.out.println(driver.getTitle());
         driver.switchTo().window(tabs.get(1));
         System.out.println(driver.getTitle());
 
 
         tesseractFactory1 = new tesseractFactory();
-        //tesseractFactory1.captureScreenshot("testimage",driver);
-        //tesseractFactory1.VerifyMinor();
+
         WebElement wholePage = driver.findElement(By.id("game-wrapper"));
 
-        tesseractFactory1.shootWebElement(driver,wholePage);
+        tesseractFactory1.OCRJackpots(driver,wholePage,appiumFactory1,65,185,150,50);
     }
 
     @After
