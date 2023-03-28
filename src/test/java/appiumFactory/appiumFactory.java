@@ -18,7 +18,7 @@ public class appiumFactory {
         this.driver = driver;
     }
 
-    //Hard coded tapping the start button by the x and y cords
+    // Provide x and y screen cords to tap on the screen
     public static void TapOnScreen(int x, int y){
         new TouchAction(driver).tap(point(x,y)).perform().release();
     }

@@ -19,12 +19,32 @@ Scenario Outline: cbTest1
       | envt | cheatStatus | game                           | jurisdiction |
       | DGE   | off         | Legendary Larry                | default      |
 
-  Scenario Outline: test
+  Scenario Outline: Verify we can spin the reels
     Given Landing on homepage
     When Selecting an Environment "<envt>" and toggle cheat "<cheatStatus>"
     And Selecting a game "<game>"
     Then I verify that the game is loading
-    Given testing
+    Then Spin Reels
     Examples:
       | envt | cheatStatus | game                           | jurisdiction |
       | DGE   | off         | Legendary Larry                | default      |
+
+  Scenario Outline: Verify menu
+    Given Landing on homepage
+    When Selecting an Environment "<envt>" and toggle cheat "<cheatStatus>"
+    And Selecting a game "<game>"
+    Then I verify that the game is loading
+    Then Open Menu
+    Examples:
+      | envt | cheatStatus | game                           | jurisdiction |
+      | DGE   | off         | Legendary Larry                | default      |
+
+  Scenario Outline: Verify pixel
+    Given Landing on homepage
+    When Selecting an Environment "<envt>" and toggle cheat "<cheatStatus>"
+    And Selecting a game "<game>"
+    Then I verify that the game is loading
+    Then Autoplay "<numberOfGames>"
+    Examples:
+      | envt | cheatStatus | game                           | jurisdiction | numberOfGames |
+      | DGE   | off         | Legendary Larry                | default      | 20           |

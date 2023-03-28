@@ -124,12 +124,65 @@ public class AndroidChromeTest {
         tesseractFactory1.OCRJackpots(driver,appiumFactory1);
     }
 
-    @Then("testing")
-    public void TestMethod() throws TesseractException, IOException, InterruptedException {
+    @Then("Spin Reels")
+    public void SpinReels() throws TesseractException, IOException, InterruptedException {
        // tesseractFactory1 = new tesseractFactory();
 
-        tesseractFactory1.GetBetAmount(driver);
+        appiumFactory1.TapOnScreen(550,1250); // CLick on the spin button
+        Thread.sleep(30000); // wait 30 seconds to see the result of the spin
     }
+
+    @Then("Open Menu")
+    public void OpenMenu() throws TesseractException, IOException, InterruptedException {
+        // tesseractFactory1 = new tesseractFactory();
+
+        appiumFactory1.TapOnScreen(666,180); // CLick on the menu button
+        Thread.sleep(30000); // wait 30 seconds to see the result of the spin
+        appiumFactory1.TapOnScreen(610,200); // CLick on the close menu button
+    }
+
+    @Then("Autoplay {string}")
+    public void TestMethod(String numberOfGames) throws TesseractException, IOException, InterruptedException, AWTException {
+        tesseractFactory1 = new tesseractFactory();
+
+        int counter = 0;
+        int numberOfGamesToPlay = Integer.parseInt(numberOfGames);
+        boolean alreadyWaiting = false;
+
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+
+        // New tab is open. we need to switch focus to that new window
+        System.out.println(driver.getTitle());
+        driver.switchTo().window(tabs.get(1));
+        System.out.println(driver.getTitle());
+
+        System.out.println("number of games to play: " + numberOfGamesToPlay);
+
+        appiumFactory1.TapOnScreen(550,1250); // CLick on the spin button
+
+        for(counter = 0; counter < numberOfGamesToPlay; counter ++){
+            Thread.sleep(5000);
+            if(tesseractFactory1.GetAutoSpinButtonState(driver)){
+                System.out.println("Game: " + counter);
+                appiumFactory1.TapOnScreen(550,1250); // CLick on the spin button
+                alreadyWaiting = false;
+            }
+            else if(!alreadyWaiting){
+                counter--;
+                System.out.println("Game: " + counter);
+                alreadyWaiting = true;
+            }
+            else{
+                System.out.println("Game: " + counter);
+                alreadyWaiting = false;
+            }
+        }
+
+
+
+        Thread.sleep(30000);
+    }
+
 
     @After
     public void tearDown() throws Exception {

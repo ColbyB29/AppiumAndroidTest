@@ -1,5 +1,8 @@
 package tesseractFactory;
 import org.openqa.selenium.*;
+
+import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,7 +91,33 @@ public class tesseractFactory {
         return MajorText;
     }
 
+    public boolean GetAutoSpinButtonState(WebDriver driver) throws IOException {
+        boolean result =false;
 
+        File screen = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+        //Image of the whole screen
+        BufferedImage img = ImageIO.read(screen);
+
+        //Area on screen where the Minor Jackpot is located
+        BufferedImage autoSpinPixel = img.getSubimage(440, 1140, 1, 1);
+
+        int colourValue = autoSpinPixel.getRGB(0,0);
+
+        System.out.println(String.valueOf(colourValue));
+
+        //-14643255 value of enabled auto spin button
+        // if the colourValue is -14643255 then the button can be clicked, else it is disabled and we cannot click the spin button
+        if(colourValue == -14643255){
+            System.out.println("button enabled");
+            result = true;
+        }
+        else{
+            System.out.println("button not enabled");
+            result = false;
+        }
+        return result;
+    }
 
     public void OCRJackpots(WebDriver driver, appiumFactory factory) throws IOException, TesseractException {
 

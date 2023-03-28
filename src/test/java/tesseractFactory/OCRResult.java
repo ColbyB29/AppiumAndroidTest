@@ -38,6 +38,7 @@ public class OCRResult {
     }
 
     // Verifying the results based on the bet amount and the jackpot amounts.
+    // This is where we determine pass and fails
     public boolean VerifyResults() {
         boolean result = false;
 
